@@ -12,7 +12,7 @@ sub wrapping {
     ($paper, $ribbon);
 }
 
-my $file_name = "input-2.txt";
+my $file_name = "./resources/input-2.txt";
 my $paper = 0;
 my $ribbon = 0;
 open STDIN, "<", $file_name or die "Could not open $file_name: $!";

@@ -28,7 +28,7 @@ my $line;
 if (@ARGV) {
     $line = $_[0];
 } else {
-    my $file_name = "input-1.txt";
+    my $file_name = "./resources/input-1.txt";
     open my $file, "<", $file_name or die "Could not open $file_name: $!";
     chomp($line = <$file>);
 }
