@@ -2,6 +2,8 @@
 use strict;
 use warnings FATAL => 'all';
 
+require "./aoc_input.pm";
+
 sub find_floor {
     my ($line, $basement) = @_;
 
@@ -28,10 +30,8 @@ my $line;
 if (@ARGV) {
     $line = $_[0];
 } else {
-    my $file_name = "./resources/input-1.txt";
-    open my $file, "<", $file_name or die "Could not open $file_name: $!";
-    chomp($line = <$file>);
+    $line = AOC::Input::load("./resources/input-1.txt", 0);
 }
 
-print "part 1: You end up at floor ", (find_floor($line))[0], ".\n";
-print "part 2: You enter the basement at position ", (find_floor($line, 1))[1], ".\n";
+print "part 1: You end up at floor ", (find_floor($$line))[0], ".\n";
+print "part 2: You enter the basement at position ", (find_floor($$line, 1))[1], ".\n";

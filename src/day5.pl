@@ -2,6 +2,8 @@
 use strict;
 use warnings FATAL => 'all';
 
+require "./aoc_input.pm";
+
 sub nice {
     my ($word) = @_;
 
@@ -36,12 +38,10 @@ sub nicer {
     $doubles > 0 && $separated > 0;
 }
 
-my $file_name = "./resources/input-5.txt";
+my $lines = AOC::Input::load("./resources/input-5.txt");
 my $nice = 0;
 my $nicer = 0;
-open STDIN, "<", $file_name or die "Could not open $file_name: $!";
-while (<STDIN>) {
-    chomp;
+foreach (@$lines) {
     $nice++ if nice($_);
     $nicer++ if nicer($_);
 }

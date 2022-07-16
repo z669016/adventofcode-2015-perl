@@ -2,6 +2,8 @@
 use strict;
 use warnings FATAL => 'all';
 
+require "./aoc_input.pm";
+
 sub wrapping {
     my ($length, $width, $height) = sort {$a <=> $b } @_;
     my @surfaces = sort {$a <=> $b }($length * $width, $length * $height, $width * $height);
@@ -12,11 +14,10 @@ sub wrapping {
     ($paper, $ribbon);
 }
 
-my $file_name = "./resources/input-2.txt";
 my $paper = 0;
 my $ribbon = 0;
-open STDIN, "<", $file_name or die "Could not open $file_name: $!";
-while (<STDIN>) {
+my $input = AOC::Input::load("./resources/input-2.txt");
+foreach (@$input) {
     chomp;
     my @size = split /x/;
     my ($p,$r) = wrapping(@size);

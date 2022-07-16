@@ -4,6 +4,8 @@ use warnings FATAL => 'all';
 
 use Benchmark;
 
+require "./aoc_input.pm";
+
 my $GRID_SIZE = 999;
 
 sub empty_grid {
@@ -35,12 +37,10 @@ sub instructions {
     if ($_[0]) {
         parse_line($_[0]);
     } else {
-        my $file_name = "./resources/input-6.txt";
+        my $lines = AOC::Input::load("./resources/input-6.txt");
         my $instructions = [];
-        open my $file, "<", $file_name or die "Could not open $file_name: $!";
-        while (my $line = <$file>) {
-            chomp($line);
-            push(@$instructions, parse_line($line));
+        foreach(@$lines) {
+            push(@$instructions, parse_line($_));
         }
 
         $instructions;

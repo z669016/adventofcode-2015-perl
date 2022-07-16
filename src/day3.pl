@@ -5,6 +5,8 @@ use warnings FATAL => 'all';
 use feature qw/switch/;
 no warnings 'experimental';
 
+require "./aoc_input.pm";
+
 sub move {
     my ($x, $y, $direction) = @_;
 
@@ -17,14 +19,11 @@ sub move {
     }
 }
 
-my $file_name = "./resources/input-3.txt";
-open STDIN, "<", $file_name or die "Could not open $file_name: $!";
-chomp(my $input = <STDIN>);
-
+my $input = AOC::Input::load("./resources/input-3.txt", 0);
 my %visited;
 my @current = (0, 0);
 $visited{"@current"} = 1;
-foreach my $direction (split //, $input) {
+foreach my $direction (split //, $$input) {
     @current = move(@current, $direction);
     $visited{"@current"} += 1;
 }
@@ -37,7 +36,7 @@ my @current_santa = (0, 0);
 my @current_robo = (0, 0);
 $visited{"@current_santa"} = 1;
 my $santa = 1;
-foreach my $direction (split //, $input) {
+foreach my $direction (split //, $$input) {
     if ($santa) {
         @current_santa = move(@current_santa, $direction);
         $visited{"@current_santa"} += 1;
