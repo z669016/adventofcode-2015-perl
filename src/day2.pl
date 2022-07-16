@@ -5,7 +5,8 @@ use warnings FATAL => 'all';
 require "./aoc_input.pm";
 
 sub wrapping {
-    my ($length, $width, $height) = sort {$a <=> $b } @_;
+    my $size = shift;
+    my ($length, $width, $height) = sort {$a <=> $b } @$size;
     my @surfaces = sort {$a <=> $b }($length * $width, $length * $height, $width * $height);
 
     my $paper = 2 * $surfaces[0] + 2 * $surfaces[1] + 2 * $surfaces[2] + $surfaces[0];
@@ -16,11 +17,9 @@ sub wrapping {
 
 my $paper = 0;
 my $ribbon = 0;
-my $input = AOC::Input::load("./resources/input-2.txt");
+my $input = AOC::Input::load("./resources/input-2.csv", {'sep_char' => 'x'});
 foreach (@$input) {
-    chomp;
-    my @size = split /x/;
-    my ($p,$r) = wrapping(@size);
+    my ($p,$r) = wrapping($_);
     $paper += $p;
     $ribbon += $r;
 }

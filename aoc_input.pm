@@ -41,14 +41,15 @@ sub text {
 }
 
 sub csv {
-    my $fh = shift;
+    my ($fh, $options) = @_;
     my @data = ();
-    my $csv = Text::CSV->new({ sep_char => ',' });
+    my $sep_char = $$options{'sep_char'} // ',';
+    my $csv = Text::CSV->new({ sep_char => $sep_char });
     while (<$fh>) {
         chomp;
 
         if ($csv->parse($_)) {
-            push @data, $csv->fields();
+            push @data, [$csv->fields()];
         } else {
             warn "Line could not be parsed: $_\n";
         }
@@ -67,7 +68,7 @@ sub load {
     if (is_txt($path)) {
         $data = text($fh);
     } elsif (is_csv($path)) {
-        $data = csv($fh);
+        $data = csv($fh, $options);
     } else {
         die "Unknown input file type for '$path'";
     }
