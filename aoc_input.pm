@@ -6,6 +6,13 @@ use feature qw/fc/;
 use File::Basename;
 use Text::CSV;
 
+use constant {
+    TXT         => ".txt",
+    CSV         => ".csv",
+};
+
+use constant SUPPORTED_TYPES => (TXT,CSV);
+
 sub must_exist {
     my $path = shift;
     die "File '$path' doesn't exist" if not -e $path;
@@ -13,7 +20,7 @@ sub must_exist {
 
 sub cmp_ext {
     my ($path, $expected) = @_;
-    my (undef, undef, $ext) = fileparse($path,(qw/.txt .csv/));
+    my (undef, undef, $ext) = fileparse($path, SUPPORTED_TYPES);
     fc($ext) eq fc($expected);
 }
 

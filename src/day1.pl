@@ -4,14 +4,19 @@ use warnings FATAL => 'all';
 
 require "./aoc_input.pm";
 
+use constant {
+    OPEN => "(",
+    CLOSE => ")",
+};
+
 sub find_floor {
     my ($line, $basement) = @_;
 
     my $floor = 0;
     my $pos = 1;
     foreach my $char (split //, $line) {
-        if ($char eq "(") {$floor++}
-        elsif ($char eq ")") {$floor--}
+        if ($char eq OPEN) {$floor++}
+        elsif ($char eq CLOSE) {$floor--}
         else {
             die "Invalid character '$char' at position $pos\n";
         }

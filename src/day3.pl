@@ -7,14 +7,21 @@ no warnings 'experimental';
 
 require "./aoc_input.pm";
 
+use constant {
+    NORTH => "^",
+    WEST => ">",
+    SOUTH => "v",
+    EAST => "<",
+};
+
 sub move {
     my ($x, $y, $direction) = @_;
 
     given($direction) {
-        when("^") { return ($x, $y+1); }
-        when(">") { return ($x+1, $y); }
-        when("v") { return ($x, $y-1); }
-        when("<") { return ($x-1, $y); }
+        when(NORTH) { return ($x, $y+1); }
+        when(WEST) { return ($x+1, $y); }
+        when(SOUTH) { return ($x, $y-1); }
+        when(EAST) { return ($x-1, $y); }
         default { die "Invalid direction '$direction'"; }
     }
 }
