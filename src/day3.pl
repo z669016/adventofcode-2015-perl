@@ -26,7 +26,7 @@ sub move {
     }
 }
 
-my $input = AOC::Input::load("./resources/input-3.txt", 0);
+my $input = AOC::Input::load("./resources/input-3.txt", {'slice' => [0]});
 my %visited;
 my @current = (0, 0);
 $visited{"@current"} = 1;

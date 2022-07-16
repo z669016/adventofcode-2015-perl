@@ -35,7 +35,7 @@ my $line;
 if (@ARGV) {
     $line = $_[0];
 } else {
-    $line = AOC::Input::load("./resources/input-1.txt", 0);
+    $line = AOC::Input::load("./resources/input-1.txt", {'slice' => [0]});
 }
 
 print "part 1: You end up at floor ", (find_floor($$line))[0], ".\n";

@@ -7,8 +7,8 @@ use File::Basename;
 use Text::CSV;
 
 use constant {
-    TXT         => ".txt",
-    CSV         => ".csv",
+    TXT   => ".txt",
+    CSV   => ".csv",
 };
 
 use constant SUPPORTED_TYPES => (TXT,CSV);
@@ -57,7 +57,9 @@ sub csv {
 }
 
 sub load {
-    my ($path, $slice) = @_;
+    my ($path, $options) = @_;
+    $options //= {};
+
     must_exist($path);
     open my $fh, "<", $path or die "Couldn't open input file '$path': $!";
 
@@ -71,8 +73,13 @@ sub load {
     }
     close $fh;
 
-    if (defined($slice)) {
-        return \@$data[$slice];
+    my $slice = ${$options}{"slice"};
+    if ($slice) {
+        if (@$slice == 1) {
+            return \(@$data)[@$slice];
+        } else {
+            return [ (@$data)[@$slice] ];
+        }
     }
 
     $data;
