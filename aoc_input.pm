@@ -34,13 +34,13 @@ sub is_txt {
     cmp_ext($path, ".txt");
 }
 
-sub text {
+sub load_text {
     my $fh = shift;
     chomp(my @data = <$fh>);
     return \@data;
 }
 
-sub csv {
+sub load_csv {
     my ($fh, $options) = @_;
     my @data = ();
     my $sep_char = $$options{'sep_char'} // ',';
@@ -66,16 +66,16 @@ sub load {
 
     my $data;
     if (is_txt($path)) {
-        $data = text($fh);
+        $data = load_text($fh);
     } elsif (is_csv($path)) {
-        $data = csv($fh, $options);
+        $data = load_csv($fh, $options);
     } else {
         die "Unknown input file type for '$path'";
     }
     close $fh;
 
-    my $slice = ${$options}{"slice"};
-    if ($slice) {
+    my $slice = $$options{"slice"};
+    if (defined $slice) {
         if (@$slice == 1) {
             return \(@$data)[@$slice];
         } else {
