@@ -3,6 +3,9 @@ package AOC::Grid;
 use strict;
 use warnings FATAL => 'all';
 
+use version;
+our $VERSION = version->declare('v0.0.1');
+
 use Readonly;
 use Scalar::Util qw(reftype);
 

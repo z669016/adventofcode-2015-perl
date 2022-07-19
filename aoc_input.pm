@@ -3,6 +3,9 @@ use strict;
 use warnings FATAL => 'all';
 use feature qw/fc/;
 
+use version;
+our $VERSION = version->declare('v0.0.1');
+
 use File::Basename;
 use Text::CSV;
 
