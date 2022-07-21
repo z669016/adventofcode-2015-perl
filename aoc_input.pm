@@ -22,7 +22,7 @@ Readonly my $SEP_CHAR => "sep_char";
 
 sub must_exist {
     my $path = shift;
-    die "File '$path' doesn't exist" if not -e $path;
+    -e $path or die "File '$path' doesn't exist";
 }
 
 sub cmp_ext {
