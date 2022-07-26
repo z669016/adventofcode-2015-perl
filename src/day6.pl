@@ -4,7 +4,7 @@ use warnings FATAL => 'all';
 
 use Benchmark;
 
-require "./aoc_input.pm";
+use AOC::Input;
 
 my $GRID_SIZE = 999;
 

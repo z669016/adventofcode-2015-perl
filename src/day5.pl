@@ -2,7 +2,7 @@
 use strict;
 use warnings FATAL => 'all';
 
-require "./aoc_input.pm";
+use AOC::Input;
 
 sub nice {
     my ($word) = @_;
