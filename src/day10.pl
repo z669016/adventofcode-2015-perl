@@ -32,12 +32,14 @@ sub encode {
     join '', @code;
 }
 
-my $code = "3113322113";
+unless (caller) {
+    my $code = "3113322113";
 
-my $code_after_40 = encode($code, 40);
-print "Day 10 - part 1: the length of the result after 40 encodings is ", length($code_after_40), "\n";
+    my $code_after_40 = encode($code, 40);
+    print "Day 10 - part 1: the length of the result after 40 encodings is ", length($code_after_40), "\n";
 
-my $code_after_50 = encode($code_after_40, 10);
-print "Day 10 - part 2: the length of the result after 50 encodings is ", length($code_after_50), "\n";
+    my $code_after_50 = encode($code_after_40, 10);
+    print "Day 10 - part 2: the length of the result after 50 encodings is ", length($code_after_50), "\n";
+}
 
 1;

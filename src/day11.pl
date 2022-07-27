@@ -60,12 +60,15 @@ sub next_password {
     $password;
 }
 
-my $password = "vzbxkghb";
-my $next_password = next_password($password);
-print "Day 11 - part 1: Santa's next password after $password is $next_password\n";
+unless (caller) {
 
-$password = $next_password;
-$next_password = next_password($password);
-print "Day 11 - part 2: Santa's next password after $password is $next_password\n";
+        my $password = "vzbxkghb";
+    my $next_password = next_password($password);
+    print "Day 11 - part 1: Santa's next password after $password is $next_password\n";
+
+    $password = $next_password;
+    $next_password = next_password($password);
+    print "Day 11 - part 2: Santa's next password after $password is $next_password\n";
+}
 
 1;
