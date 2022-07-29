@@ -6,7 +6,7 @@ use List::MoreUtils qw(uniq);
 use List::Permutor;
 use AOC::Input;
 
-our $mapper = sub {
+sub mapper {
     /(\w+) would (gain|lose) (\d+) happiness units by sitting next to (\w+)\./;
     [ $1, $4, ($2 eq 'lose' ? -1 : 1) * $3 ];
 };
@@ -60,7 +60,7 @@ sub max_happiness_sum {
 
 unless (caller) {
     my %options = (
-        map => $mapper,
+        map => \&mapper,
     );
     my $data = AOC::Input::load("./resources/input-13.txt", \%options);
 

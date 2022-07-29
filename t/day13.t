@@ -20,7 +20,7 @@ my @lines = (
     "David would gain 41 happiness units by sitting next to Carol.",
 );
 
-my @happiness = map {&$main::mapper($_)} @lines;
+my @happiness = map {main::mapper($_)} @lines;
 
 my $guests = main::guests(\@happiness);
 my $happiness = main::happiness_hash(\@happiness);
