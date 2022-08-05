@@ -43,6 +43,11 @@ sub add_power {
     [ $$weapon[$COST] + $$add[$COST], $$weapon[$DAMAGE] + $$add[$DAMAGE], $$weapon[$ARMOR] + $$add[$ARMOR] ]
 }
 
+sub uniq (@){
+    my %seen = ();
+    grep { not $seen{"@$_"}++ } @_;
+}
+
 # create all possible strategies based on the weapons, armor and rings available ordered by cost (cheap to expensive)
 sub strategies {
     my @strategies = ();
@@ -75,6 +80,7 @@ sub strategies {
     }
 
     sort {$$a[$COST] <=> $$b[$COST]} @strategies;
+    # uniq sort {$$a[$COST] <=> $$b[$COST]} @strategies;
 }
 
 sub input {
@@ -94,17 +100,19 @@ sub play_game {
     my ($player, $boss, $verbose) = @_;
 
     while ($$player[$HIT_POINTS] > 0 && $$boss[$HIT_POINTS] > 0) {
-        $$boss[$HIT_POINTS] -= $$player[$DAMAGE] - $$boss[$ARMOR];
+        my $hit = $$player[$DAMAGE] - $$boss[$ARMOR];
+        $$boss[$HIT_POINTS] -= $hit > 0 ? $hit : 1;
         if (defined $verbose) {
-            print "The player deals $$player[$DAMAGE]-$$boss[$ARMOR] = ", $$player[$DAMAGE] - $$boss[$ARMOR], " damage;";
+            print "The player deals $$player[$DAMAGE]-$$boss[$ARMOR] = ", $hit, " damage;";
             print "the boss goes down to $$boss[$HIT_POINTS] hit points,\n";
         }
 
         last if $$boss[$HIT_POINTS] <= 0;
 
-        $$player[$HIT_POINTS] -= $$boss[$DAMAGE] - $$player[$ARMOR];
+        $hit = $$boss[$DAMAGE] - $$player[$ARMOR];
+        $$player[$HIT_POINTS] -= $hit > 0 ? $hit : 1;
         if (defined $verbose) {
-            print "The boss deals $$boss[$DAMAGE]-$$player[$ARMOR] = ", $$boss[$DAMAGE] - $$player[$ARMOR], " damage;";
+            print "The boss deals $$boss[$DAMAGE]-$$player[$ARMOR] = ", $hit, " damage;";
             print "the player  goes down to $$player[$HIT_POINTS] hit points,\n";
         }
     }
@@ -125,18 +133,22 @@ unless (caller) {
     }
     print "Day 21 - part 1: You can win the game with no less than $$strategy[$COST] of gold\n";
 
-    # find the first strategy the boss will win (strategies are reverse ordered by cost)
-    # beware, you need the strategy before that one (the last one the player had won)
-    my $prev_strategy;
+    # find most expensive lost game (you need to check all, for for the same cost you can have different
+    # combinations of damage and armour, and those can have different outcome;
+    my $max_lose;
     foreach (reverse strategies) {
         $strategy = $_;
 
         my @player = (100, $$strategy[$DAMAGE], $$strategy[$ARMOR]);
         my @boss = @boss_start;
-        last if play_game(\@player, \@boss) == $BOSS;
-        $prev_strategy = $strategy;
+
+        if (play_game(\@player, \@boss) == $BOSS) {
+            $max_lose //= $$strategy[$COST];
+            $max_lose = $$strategy[$COST] if $max_lose < $$strategy[$COST];
+        }
+        last if defined($max_lose) && $$strategy[$COST] < $max_lose;
     }
-    print "Day 21 - part 2: You can lose the game with at most $$prev_strategy[$COST] of gold\n";
+    print "Day 21 - part 2: You can lose the game with at most $max_lose of gold\n";
 }
 
 1;
