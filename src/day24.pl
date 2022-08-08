@@ -37,47 +37,46 @@ sub container_size {
     sum(@$list) / $count;
 }
 
-sub combinations_of_weight {
-    my ($weight, $numbers) = @_;
-
-    return [ [ @$numbers ] ] if sum(@$numbers) == $weight;
-    return [] if sum(@$numbers) < $weight;
-
-    my @copy = @$numbers;
-    my @combinations = ();
-    my $combinations = combinations($weight, \@copy);
-    foreach my $combination (@$combinations) {
-        my %seen = map {$_ => 1} @$combination;
-        @copy = grep {not $seen{$_}} @$numbers;
-
-        my $sub = combinations_of_weight($weight, \@copy);
-        foreach (@$sub) {
-            my @sub_combi = @$_;
-            push @combinations, [ $combination, ref $$_[0] eq ref "" ? $_ : @$_ ];
-        }
-    }
-
-    \@combinations;
-}
+# sub combinations_of_weight {
+#     my ($weight, $numbers) = @_;
+#
+#     return [ [ @$numbers ] ] if sum(@$numbers) == $weight;
+#     return [] if sum(@$numbers) < $weight;
+#
+#     my @copy = @$numbers;
+#     my @combinations = ();
+#     my $combinations = combinations($weight, \@copy);
+#     foreach my $combination (@$combinations) {
+#         my %seen = map {$_ => 1} @$combination;
+#         @copy = grep {not $seen{$_}} @$numbers;
+#
+#         my $sub = combinations_of_weight($weight, \@copy);
+#         foreach (@$sub) {
+#             my @sub_combi = @$_;
+#             push @combinations, [ $combination, ref $$_[0] eq ref "" ? $_ : @$_ ];
+#         }
+#     }
+#
+#     \@combinations;
+# }
 
 sub smallest {
     my $smallest;
 
     my $combinations = shift;
     foreach (@$combinations) {
-        my $first = $$_[0];
-
-        $smallest //= @$first + 0;
-        $smallest = @$first + 0 if $smallest > @$first + 0;
+        $smallest //= @$_;
+        $smallest = @$_ if $smallest > @$_;
     }
 
     $smallest;
 }
 
 sub quantum {
+    my $list = shift;
     my $mul = 1;
 
-    foreach (@_) {
+    foreach (@$list) {
         $mul *= $_;
     }
 
@@ -88,16 +87,22 @@ sub smallest_quantum {
     my $combinations = shift;
     my $smallest = smallest $combinations;
 
-    my @first = grep {@$_ == $smallest} map {$$_[0]} @$combinations;
-    min(map {quantum @$_} @first)
+    my @first = grep {@$_ == $smallest} @$combinations;
+    min(map {quantum $_} @first)
 }
 
 unless (caller) {
     my $numbers = AOC::Input::load("./resources/input-24.txt");
     my $size = container_size($numbers);
-    my $combinations = combinations_of_weight($size, $numbers);
+    my $combinations = combinations($size, $numbers);
     my $smallest_quantum = smallest_quantum($combinations);
     print "Day 24 - part 1: quantum entanglement of the first group of packages is $smallest_quantum\n";
+
+    $numbers = AOC::Input::load("./resources/input-24.txt");
+    $size = container_size($numbers, 4);
+    $combinations = combinations($size, $numbers);
+    $smallest_quantum = smallest_quantum($combinations);
+    print "Day 24 - part 2: quantum entanglement of the first group of packages (including trunk) is $smallest_quantum\n";
 }
 
 1;
